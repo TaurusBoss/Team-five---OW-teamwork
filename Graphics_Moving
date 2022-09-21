@@ -1,0 +1,97 @@
+var bg = createSprite(200,200);
+bg.setAnimation("bg.png_1");
+
+//TOP WALL
+var topwallgroup = createGroup();
+var topwallY = 78;
+for (var i = 0; i < 5; i++) {
+  topwallgroup.add(createSprite(topwallY, 9));
+  topwallY = topwallY+64;
+}
+topwallgroup.setAnimationEach("top_wall.png_1");
+
+//TOP TORCH
+var toptorchgroup = createGroup();
+var toptorchY = 78;
+for (var i = 0; i < 5; i++) {
+  toptorchgroup.add(createSprite(toptorchY, 9));
+  toptorchY = toptorchY+64;
+}
+toptorchgroup.setAnimationEach("torch.png_1");
+
+//BOTTOM WALL
+var bottomwallgroup = createGroup();
+var bottomwallY = 78;
+for (var i = 0; i < 5; i++) {
+  bottomwallgroup.add(createSprite(bottomwallY, 380));
+  bottomwallY = bottomwallY+64;
+}
+bottomwallgroup.setAnimationEach("bottom_wall.png_1");
+
+//LEFT WALL
+var leftwallgroup = createGroup();
+var leftwallX = 79;
+for (var i = 0; i < 5; i++) {
+  leftwallgroup.add(createSprite(9, leftwallX));
+  leftwallX = leftwallX+158;
+}
+leftwallgroup.setAnimationEach("left_wall.png_1");
+
+//LEFT TORCH
+var lefttorchgroup = createGroup();
+var lefttorchX = 79;
+for (var i = 0; i < 5; i++) {
+  lefttorchgroup.add(createSprite(9, lefttorchX));
+  lefttorchX = lefttorchX+130;
+}
+lefttorchgroup.setAnimationEach("left_torch.png_1");
+
+//RIGHT WALL
+var rightwallgroup = createGroup();
+var rightwallX = 79;
+for (var i = 0; i < 5; i++) {
+  rightwallgroup.add(createSprite(391, rightwallX));
+  rightwallX = rightwallX+158;
+}
+rightwallgroup.setAnimationEach("right_wall.png_1");
+
+//RIGHT TORCH
+var righttorchgroup = createGroup();
+var righttorchX = 79;
+for (var i = 0; i < 5; i++) {
+  righttorchgroup.add(createSprite(391, righttorchX));
+  righttorchX = righttorchX+130;
+}
+righttorchgroup.setAnimationEach("right_torch.png_1");
+
+//HERO
+var hero = createSprite(200, 200);
+hero.setAnimation("red_alien_1");
+hero.scale = 0.1;
+
+
+function draw() {
+  if (keyDown("left")) {
+    if (hero.x > 30) {
+      hero.x = hero.x - 5;
+    }
+  }
+  if (keyDown("right")) {
+    if (hero.x < 370) {
+      hero.x = hero.x + 5;
+    }
+  }
+  if (keyDown("up")) {
+    if (hero.y > 40) {
+      hero.y = hero.y - 5;
+    }
+  }
+  if (keyDown("down")) {
+    if (hero.y < 345) {
+      hero.y = hero.y + 5;
+    }
+  }
+  
+  
+  drawSprites();
+}
