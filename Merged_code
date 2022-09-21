@@ -1,0 +1,219 @@
+//BACKGROUND
+var bg = createSprite(200,200);
+bg.setAnimation("bg.png_1");
+
+//TOP WALL
+var topwallgroup = createGroup();
+var topwallX = 78;
+for (var i = 0; i < 5; i++) {
+  topwallgroup.add(createSprite(topwallX, 22));
+  topwallX = topwallX+64;
+}
+topwallgroup.setAnimationEach("top_wall.png_1");
+
+//TOP TORCH
+var toptorchgroup = createGroup();
+var toptorchX = 78;
+for (var i = 0; i < 5; i++) {
+  if(i !== 2){
+    toptorchgroup.add(createSprite(toptorchX, 9));
+    toptorchX = toptorchX+64;
+  }
+  else{
+    toptorchX = toptorchX+64;
+  }
+}
+toptorchgroup.setAnimationEach("torch.png_1");
+
+//BOTTOM WALL
+var bottomwallgroup = createGroup();
+var bottomwallX = 78;
+for (var i = 0; i < 5; i++) {
+  bottomwallgroup.add(createSprite(bottomwallX, 380));
+  bottomwallX = bottomwallX+64;
+}
+bottomwallgroup.setAnimationEach("bottom_wall.png_1");
+
+//LEFT WALL
+var leftwallgroup = createGroup();
+var leftwallY = 79;
+for (var i = 0; i < 5; i++) {
+  leftwallgroup.add(createSprite(9, leftwallY));
+  leftwallY = leftwallY+158;
+}
+leftwallgroup.setAnimationEach("left_wall.png_1");
+
+//LEFT TORCH
+var lefttorchgroup = createGroup();
+var lefttorchY = 89;
+for (var i = 0; i < 2; i++) {
+  lefttorchgroup.add(createSprite(20, lefttorchY));
+  lefttorchY = lefttorchY+130;
+}
+lefttorchgroup.setAnimationEach("left_torch.png_1");
+
+//RIGHT WALL
+var rightwallgroup = createGroup();
+var rightwallY = 89;
+for (var i = 0; i < 5; i++) {
+  rightwallgroup.add(createSprite(391, rightwallY));
+  rightwallY = rightwallY+158;
+}
+rightwallgroup.setAnimationEach("right_wall.png_1");
+
+//RIGHT TORCH
+var righttorchgroup = createGroup();
+var righttorchY = 79;
+for (var i = 0; i < 5; i++) {
+  righttorchgroup.add(createSprite(380, righttorchY));
+  righttorchY = righttorchY+130;
+}
+righttorchgroup.setAnimationEach("right_torch.png_1");
+
+//GATE
+var gate = createSprite(206, 20);
+gate.setAnimation("gate.png_1");
+
+//SKULL
+var skull = createSprite(370, 50);
+skull.setAnimation("skull.png_1");
+
+//WEB
+var web = createSprite(30, 350);
+web.setAnimation("web.png_1");
+
+//HERO
+var hero = createSprite(200, 330);
+hero.setAnimation("hero_new.png_1");
+hero.scale = 0.1;
+
+//ENEMY 1
+var enemy1 = createSprite(340, 65);
+enemy1.scale = 2;
+enemy1.setAnimation("enemy1");
+createEdgeSprites();
+
+
+//LIVES
+var numOfLives = 3;
+var heartgroup = createGroup();
+var rightheartX = 330;
+for (var i = 0; i < numOfLives; i++) {
+  heartgroup.add(createSprite(rightheartX, 385 ));
+  rightheartX = rightheartX+20;
+}
+heartgroup.setAnimationEach("retro_red_heart_1");
+heartgroup.setWidthEach(15);
+heartgroup.setHeightEach(15);
+
+//SCORE
+var score = 0;
+
+//ITEM BOW
+var bow = createSprite(350, 200);
+bow.setAnimation("bow_1");
+bow.scale = 0.2;
+var istherebow = 0;
+
+//ITEM KEYS
+var key_all = 0;
+var key1 = 0;
+var key2 = 0;
+var key_part1 = createSprite(50, 50);
+key_part1.setAnimation("key_1");
+var key_part2 = createSprite(250, 50);
+key_part2.setAnimation("key_2");
+key_part1.scale = 0.6;
+key_part2.scale = 0.6;
+
+function draw() {
+  //CONTROL
+  if (keyDown("left")) {
+    if (hero.x > 30) {
+      hero.x = hero.x - 5;
+    }
+  }
+  if (keyDown("right")) {
+    if (hero.x < 370) {
+      hero.x = hero.x + 5;
+    }
+  }
+  if (keyDown("up")) {
+    if (hero.y > 40) {
+      hero.y = hero.y - 5;
+    }
+  }
+  if (keyDown("down")) {
+    if (hero.y < 345) {
+      hero.y = hero.y + 5;
+    }
+  }
+  
+  drawSprites();
+  
+  //SCORE
+  fill("white");
+  textSize(16);
+  text("SCORE: " + score, 20, 390);
+  
+  //ITEM KEYS
+  if (key1 == 0) {
+    key_part1.x = 50;
+    key_part1.y = 50;
+    if (hero.isTouching(key_part1)) {
+      key1 = 1;
+    }
+  }
+  if (key1 == 1) {
+    key_part1.x = 190;
+    key_part1.y = 378;
+  }
+  if (key2 == 0) {
+    key_part2.x = 250;
+    key_part2.y = 50;
+    if (hero.isTouching(key_part2)) {
+      key2 = 1;
+    }
+  }
+  if (key2 == 1) {
+    key_part2.x = 186;
+    key_part2.y = 378;
+  }
+  if (key1 == 1 && key2 == 1) {
+    key_all = 1;
+  }
+  
+  //ITEM BOW
+  if (istherebow == 0 && hero.isTouching(bow)) {
+    istherebow = 1;
+    Bowpickup();
+  }
+  function Bowpickup() {
+    bow.x = hero.x;
+    bow.y = hero.y;
+  }
+  if (istherebow == 1) {
+    bow.x = hero.x;
+    bow.y = hero.y;
+  }
+  
+  //GATE
+  if(hero.isTouching(gate)){
+    console.log('Reached the Gate');
+  }
+  
+  //ENEMY 1
+  
+   enemy1.bounceOff(edges);
+  if (hero.x > enemy1.x) {
+    enemy1.velocityX = 2;
+  } else {
+    enemy1.velocityX = -2;
+  }
+  if (hero.y > enemy1.y) {
+    enemy1.velocityY = 2;
+  } else {
+    enemy1.velocityY = -2;
+  }
+}
+
