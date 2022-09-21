@@ -1,0 +1,62 @@
+var background = createSprite(200, 200);
+background.setAnimation("background_landscape07_1");
+var alien = createSprite(200, 50);
+alien.setAnimation("alien_06_1");
+alien.scale = 0.2;
+alien.velocityX = randomNumber(-5, 5);
+var bullet = createSprite(700, 700);
+bullet.setAnimation("soccer_bw_1");
+bullet.scale = 0.1;
+var fire = createSprite(200, 200);
+fire.setAnimation("fire");
+var me = createSprite(200, 350);
+fire.scale = .15;
+me.setAnimation("fly_bot_1");
+me.scale = 0.5;
+var score = 0;
+function draw() {
+  if (alien.x > 350) {
+    alien.velocityX = randomNumber(-5, -1);
+  }
+  if (alien.x < 50) {
+    alien.velocityX = randomNumber(1, 5);
+  }
+  alien.velocityX = alien.velocityX + randomNumber(-2, 2);
+  if (keyDown("left")) {
+    if (me.x > 55) {
+      me.x = me.x - 5;
+    }
+  }
+  if (keyDown("right")) {
+    if (me.x < 345) {
+      me.x = me.x + 5;
+    }
+  }
+  if (mouseDown("leftButton")) {
+    bullet.x = me.x;
+    bullet.y = me.y - 75;
+    bullet.velocityX = (World.mouseX - me.x) / 20;
+    bullet.velocityY = (World.mouseY - me.y) / 20;
+  }
+  if (bullet.isTouching(alien)) {
+    bullet.x = 700;
+    bullet.y = 700;
+    score = score + 1;
+  }
+  drawSprites();
+  fill("yellow");
+  textSize(20);
+  text("SCORE: " + score, 0, 20);  
+  shootBack();
+}
+function shootBack() {
+  if (alien.x || me.x) {
+    fire.x = alien.x;
+    fire.velocityY = 5;
+  }
+  
+  if (fire.y > 400 ) {
+    fire.y = 30;
+  }
+}
+
