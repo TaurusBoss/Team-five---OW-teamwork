@@ -1,0 +1,69 @@
+var key_all = 0;
+var key1 = 0;
+var key2 = 0;
+var background = createSprite(200, 200);
+background.setAnimation("grid_1");
+var character = createSprite(200, 200);
+character.setAnimation("emoji_09_1");
+character.scale = 0.2;
+var key_part1 = createSprite(50, 50);
+key_part1.setAnimation("key_1");
+var key_part2 = createSprite(250, 50);
+key_part2.setAnimation("key_2");
+var bow = createSprite(350, 200);
+bow.setAnimation("bow_1");
+bow.scale = 0.7;
+var istherebow = 0;
+var characterwbow = createGroup();
+function draw() {
+  drawSprites();
+  if (keyDown("up")) {
+    character.y = character.y - 7;
+  }
+  if (keyDown("down")) {
+    character.y = character.y + 7;
+  }
+  if (keyDown("left")) {
+    character.x = character.x - 7;
+  }
+  if (keyDown("right")) {
+    character.x = character.x + 7;
+  }
+  if (key1 == 0) {
+    key_part1.x = 50;
+    key_part1.y = 50;
+    if (character.isTouching(key_part1)) {
+      key1 = 1;
+    }
+  }
+  if (key1 == 1) {
+    key_part1.x = 50;
+    key_part1.y = 380;
+  }
+  if (key2 == 0) {
+    key_part2.x = 250;
+    key_part2.y = 50;
+    if (character.isTouching(key_part2)) {
+      key2 = 1;
+    }
+  }
+  if (key2 == 1) {
+    key_part2.x = 100;
+    key_part2.y = 350;
+  }
+  if (key1 == 1 && key2 == 1) {
+    key_all = 1;
+  }
+  if (istherebow == 0 && character.isTouching(bow)) {
+    istherebow = 1;
+    Bowpickup();
+  }
+  function Bowpickup() {
+    bow.x = character.x;
+    bow.y = character.y;
+  }
+  if (istherebow == 1) {
+    bow.x = character.x;
+    bow.y = character.y;
+  }
+}
