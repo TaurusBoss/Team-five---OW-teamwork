@@ -1,0 +1,100 @@
+var background = createSprite(200, 200);
+background.setAnimation("background_landscape07_1");
+var alien = createSprite(200, 50);
+alien.setAnimation("alien_06_1");
+alien.scale = 0.2;
+alien.velocityX = randomNumber(-5, 5);
+var bullet = createSprite(700, 700);
+bullet.setAnimation("soccer_bw_1");
+bullet.scale = 0.1;
+var me = createSprite(200, 350);
+me.setAnimation("fly_bot_1");
+me.scale = 0.5;
+var bulletalien = createSprite(700, 700);
+bulletalien.setAnimation("gameplayadventure_16_1");
+bulletalien.scale = 0.1;
+//
+var score = 0;
+var lives = 5;
+function draw() {
+  //Gravitáció (ha nem kell, állítsd nullára) 
+  bullet.velocityY = bullet.velocityY + 0.2;
+  bulletalien.velocityY = bulletalien.velocityY + 0.2;
+  if (alien.x > 350) {
+    alien.velocityX = randomNumber(-5, -1);
+  }
+  if (alien.x < 50) {
+    alien.velocityX = randomNumber(1, 5);
+  }
+  alien.velocityX = alien.velocityX + randomNumber(-2, 2);
+  if (keyDown("left")) {
+    if (me.x > 55) {
+      me.x = me.x - 5;
+    }
+  }
+  if (keyDown("right")) {
+    if (me.x < 345) {
+      me.x = me.x + 5;
+    }
+  }
+  if (keyDown("up")) {
+    if (me.y > 55) {
+      me.y = me.y - 5;
+    }
+  }
+  if (keyDown("down")) {
+    if (me.y < 345) {
+      me.y = me.y + 5;
+    }
+  }
+  if (mouseDown("leftButton")) {
+    bullet.x = me.x;
+    bullet.y = me.y - 75;
+    bullet.velocityX = (World.mouseX - me.x) / 20;
+    bullet.velocityY = (World.mouseY - me.y) / 20;
+  }
+  //alien lő
+  if (World.frameCount % 60 == 0) {
+    bulletalien.x = alien.x;
+    bulletalien.y = alien.y + 75;
+    bulletalien.velocityX = (me.x - alien.x) / 80;
+    bulletalien.velocityY = (me.y - alien.y) / 80;
+  }
+  // Ha a lövedék eltalálja a bosst
+  if (bullet.isTouching(alien)) {
+    // visszapattanás: legyen -10, ha akarjuk, pozitív érték, ha nem
+    if (bullet.velocityY > -10) {
+      bullet.y = bullet.y + 50;
+      bullet.velocityY = 0 - bullet.velocityY;
+      lives = lives - 1;
+    } else {
+      bullet.x = 700;
+      bullet.y = 700;
+      score = score + 1;
+    }
+  }
+  // Ha a boss lövedéke minket eltalál
+  if (bulletalien.isTouching(me)) {
+    lives = lives - 1;
+    bulletalien.x = 700;
+    bulletalien.y = 700;
+  }
+  drawSprites();
+  if (lives > 0) {
+    fill("yellow");
+    textSize(20);
+    text("SCORE: " + score, 0, 20);  
+    fill("green");
+    textSize(20);
+    text("LIVES: " + lives, 0, 40);
+  } else {
+    //0 élet esetén mi van: game over, új background, stb
+    alien.y = 700;
+    bullet.y = 700;
+    me.y = 1000;
+    background.setAnimation("desert_1");
+    fill("red");
+    textSize(30);
+    text("GAME OVER", 100, 100);
+  }
+}
