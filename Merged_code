@@ -1,3 +1,4 @@
+
 //BACKGROUND
 var bg = createSprite(200,200);
 bg.setAnimation("bg.png_1");
@@ -87,6 +88,11 @@ var hero = createSprite(200, 330);
 hero.setAnimation("hero_new.png_1");
 hero.scale = 0.1;
 
+//FIRE
+var fire = createSprite(30, 150);
+fire.setAnimation("flamethrower_2_2.png_1");
+fire.velocityX = 3;
+
 //ENEMY 1
 var enemy1 = createSprite(340, 65);
 enemy1.scale = 2;
@@ -98,13 +104,16 @@ createEdgeSprites();
 var numOfLives = 3;
 var heartgroup = createGroup();
 var rightheartX = 330;
-for (var i = 0; i < numOfLives; i++) {
+
+  for (var i = 0; i < numOfLives; i++) {
   heartgroup.add(createSprite(rightheartX, 385 ));
   rightheartX = rightheartX+20;
 }
+
 heartgroup.setAnimationEach("retro_red_heart_1");
 heartgroup.setWidthEach(15);
 heartgroup.setHeightEach(15);
+
 
 //SCORE
 var score = 0;
@@ -121,10 +130,27 @@ var key1 = 0;
 var key2 = 0;
 var key_part1 = createSprite(50, 50);
 key_part1.setAnimation("key_1");
-var key_part2 = createSprite(250, 50);
+var key_part1x = randomNumber(30, 200);
+var key_part1y = randomNumber(170, 270);
+var key_part2 = createSprite(250, 100);
 key_part2.setAnimation("key_2");
+var key_part2x = randomNumber(220, 370);
+var key_part2y = randomNumber(50, 100);
 key_part1.scale = 0.6;
 key_part2.scale = 0.6;
+
+//FLASKS
+var flask = createSprite(randomNumber(50, 200), randomNumber(50, 100));
+flask.setAnimation("flasks_3_1.png_1");
+var isFlaskGrabbed = 0;
+
+//PEAKS
+var peak1 = createSprite(190, 50);
+peak1.setAnimation("peaks_1.png_1");
+var peak2 = createSprite(205, 50);
+peak2.setAnimation("peaks_1.png_1");
+var peak3 = createSprite(220, 50);
+peak3.setAnimation("peaks_1.png_1");
 
 function draw() {
   //CONTROL
@@ -158,8 +184,8 @@ function draw() {
   
   //ITEM KEYS
   if (key1 == 0) {
-    key_part1.x = 50;
-    key_part1.y = 50;
+    key_part1.x = key_part1x;
+    key_part1.y = key_part1y;
     if (hero.isTouching(key_part1)) {
       key1 = 1;
     }
@@ -169,8 +195,8 @@ function draw() {
     key_part1.y = 378;
   }
   if (key2 == 0) {
-    key_part2.x = 250;
-    key_part2.y = 50;
+    key_part2.x = key_part2x;
+    key_part2.y = key_part2y;
     if (hero.isTouching(key_part2)) {
       key2 = 1;
     }
@@ -214,6 +240,33 @@ function draw() {
     enemy1.velocityY = 2;
   } else {
     enemy1.velocityY = -2;
+  }
+  
+   //FIRE
+  if (fire.x > 374) {
+    fire.velocityX = 0 - fire.velocityX;
+    fire.rotation = 180;
+  }
+  if (fire.x < 26) {
+    fire.velocityX = 0 - fire.velocityX;
+    fire.rotation = 0;
+  }
+  if (hero.isTouching(flask)) {
+    isFlaskGrabbed = 1;
+    flask.x = 700;
+    flask.y = 700;
+  }
+  if ((hero.isTouching(peak1) || hero.isTouching(peak2)) || hero.isTouching(peak2)) {
+    if (isFlaskGrabbed == 0) {
+      numOfLives = numOfLives - 1;
+      hero.x = 200;
+      hero.y = 330;
+    }
+  }
+  if (hero.isTouching(fire)) {
+    numOfLives = numOfLives - 1;
+    hero.x = 200;
+    hero.y = 330;
   }
 }
 
