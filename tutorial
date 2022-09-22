@@ -1,0 +1,124 @@
+var i1 = "";
+var bg = createSprite(200, 200);
+bg.setAnimation("texture_01_1");
+var scroll = createSprite(130, 160);
+scroll.setAnimation("Scroll-PNG-File.png_1");
+scroll.scale = 1.7;
+var i1 = createSprite(300, 80);
+i1.setAnimation("info-icon-32.png_1");
+i1.scale = 0.2;
+var i2 = createSprite(300, 230);
+i2.setAnimation("info-icon-32.png_1");
+i2.scale = 0.2;
+var i3 = createSprite(50, 350);
+i3.setAnimation("info-icon-32.png_1");
+i3.scale = 0.2;
+var play = createSprite(370, 370);
+play.setAnimation("play-button_icon-icons.com_53922.png_1");
+play.scale = 0.1;
+var me = createSprite(200, 200);
+me.setAnimation("kidportrait_02_1");
+me.scale = 0.3;
+createEdgeSprites();
+var info1,info2,info3;
+
+function draw() {
+  if (keyDown("right")) {
+    if (me.x > 0) {
+      me.x = me.x + 5;
+    }
+  }
+  if (keyDown("left")) {
+    if (me.x < 400) {
+      me.x = me.x - 5;
+    }
+  }
+  if (keyDown("up")) {
+    if (me.y > 0) {
+      me.y = me.y - 5;
+    }
+  }
+  if (keyDown("down")) {
+    if (me.y < 400) {
+      me.y = me.y + 5;
+    }
+  }
+  me.collide(edges);
+  textSize(14);
+  stroke("white");
+  strokeWeight(3);
+  text("Get to know the game", 30, 60);
+  text("by navigating to each info points!", 30, 70);
+  noStroke();
+  texts();
+  drawSprites();
+}
+function texts() {
+  if (info1==1) {
+    writetext1("1.   Pick up the cactus","potion to survive the spikes");
+  }
+  if (me.isTouching(i1)) {
+    info1 = 1;
+    i1.x = 1000;
+    i1.y = 1000;
+  }
+  if (info2==1) {
+    writetext2("2.  Gather the bow","to kill the boss");
+  }
+  if (me.isTouching(i2)) { 
+    info2 = 1;
+    fill("white");
+    textSize(20);
+    i2.x = 1000;
+    i2.y = 1000;
+  }
+  if (info3==1) {
+    writetext3("3.  Be careful,","you only have 3 lives!");
+  }
+  if (me.isTouching(i3)) {
+    info3 = 1;
+    fill("white");
+    textSize(20);
+    i3.x = 1000;
+    i3.y = 1000;
+    function writetext4() {
+      stroke("black");
+      strokeWeight(5);
+      textSize(14);
+      text("Go to the play button to start", 40, 260);
+      noStroke();
+    }
+  }
+}
+function writetext1(text1,text2,text3) {
+  fill("white");
+  textSize(17);
+  text(text1, 30, 100);
+  text(text2, 30, 115);
+  if (text3){text(text3, 30, 130);}
+  noStroke();
+}
+function writetext2(text1,text2,text3) {
+  fill("white");
+  textSize(20);
+  text(text1, 30, 140);
+  text(text2, 30, 160);
+  if (text3){text(text3, 30, 130);}
+  noStroke();
+}
+function writetext3(text1,text2,text3) {
+  fill("white");
+  textSize(20);
+  text(text1, 30, 180);
+  text(text2, 30, 200);
+  if (text3){text(text3, 30, 130);}
+  noStroke();
+}
+function writetext4(text1,text2,text3) {
+  fill("white");
+  textSize(20);
+  text(text1, 30, 200);
+  text(text2, 30, 215);
+  if (text3){text(text3, 30, 130);}
+  noStroke();
+}
